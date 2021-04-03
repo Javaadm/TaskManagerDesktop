@@ -1,0 +1,158 @@
+﻿<Window x:Class="WpfTest.Forms.MainWindow"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfTest"
+        Loaded="Window_Loaded"
+        mc:Ignorable="d"
+        Title="Task Manager"
+        Height="600"
+        Width="1000">
+    <Grid Background="#ffdadada">
+        <Button
+            Click="Button_Add_Task_Parent_Click"
+            Content="{materialDesign:PackIcon Plus}"
+            ToolTip="Добавть задачу" 
+            Width="35"
+            Padding="0"
+            Margin="20 15 0 0"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Left"/>
+
+        <TreeView x:Name="treeTasks" Margin="0 50 0 0">
+            <TreeView.Resources>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="HeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock  Text="{Binding }"
+                                            FontSize="13"
+                                            FontWeight="Black"
+                                            Margin="0 5 0 2"
+                                            />
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TreeView.Resources>
+        </TreeView>
+
+        <Border MinWidth="650"
+                Margin="30"
+                Background="White"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Padding="30"
+                MaxWidth="700"
+                CornerRadius="20">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30"
+                                  Color="LightGray"
+                                  ShadowDepth="0" />
+            </Border.Effect>
+            <Grid>
+                <Button
+                    Panel.ZIndex="10"
+                    Click="Button_Add_Task_Children_Click"
+                    Content="{materialDesign:PackIcon Plus}"
+                    ToolTip="Добавть подзадачу" 
+                    Width="35"
+                    Padding="0"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"/>
+                <StackPanel>
+                    <TextBlock  x:Name="NameTask"
+                                Text="Задача"
+                                FontSize="30"
+                                FontWeight="Black"
+                                Margin="0 0 0 20" />
+
+                    <TextBlock  Text="Описание"
+                                FontSize="14"
+                                FontStyle="Oblique"
+                                FontWeight="Black"
+                                Margin="0 10 0 0" />
+
+                    <RichTextBox IsDocumentEnabled="True"
+                                 IsReadOnly="{Binding IsChecked, ElementName=RichTextBoxIsReadOnlyCheckBox}"
+                                 VerticalScrollBarVisibility="Auto"
+                                 SpellCheck.IsEnabled="True"
+                                 Margin="10 0 10 0"
+                                 MinHeight="50"
+                                 MaxHeight="100"
+                                 Grid.Row="1">
+                        <FlowDocument>
+                            <Paragraph>
+                                <Run FontStyle="Italic" x:Name="TextDescriptionTask">
+                                    With formatting support
+                                </Run>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+
+                    <TextBlock  Text="Исполнители"
+                                FontSize="14"
+                                FontStyle="Oblique"
+                                FontWeight="Black"
+                                Margin="0 10 0 0" />
+                    <RichTextBox IsDocumentEnabled="True"
+                                 IsReadOnly="{Binding IsChecked, ElementName=RichTextBoxIsReadOnlyCheckBox}"
+                                 VerticalScrollBarVisibility="Auto"
+                                 SpellCheck.IsEnabled="True"
+                                 Margin="10 0 10 0"
+                                 MinHeight="20"
+                                 MaxHeight="30"
+                                 Grid.Row="1">
+                        <FlowDocument>
+                            <Paragraph>
+                                <Run FontStyle="Italic" x:Name="ListExe">
+                                    With formatting support
+                                </Run>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+
+                    <TextBlock  Text="Стадия"
+                                FontSize="14"
+                                FontStyle="Oblique"
+                                FontWeight="Black"
+                                Margin="0 10 0 0" />
+                    <ComboBox materialDesign:HintAssist.Hint="Стадия исполнения"
+                              Margin="10 0 10 0"
+                              x:Name="StateTask">
+                        <ComboBoxItem Content="Назначена" />
+                        <ComboBoxItem Content="Выполняется" />
+                        <ComboBoxItem Content="Приостановлена" />
+                        <ComboBoxItem Content="Завершена" />
+                    </ComboBox>
+
+                    <TextBlock  Text="Трудоемкость"
+                                FontSize="14"
+                                FontStyle="Oblique"
+                                FontWeight="Black"
+                                Margin="0 10 0 0" />
+
+                    <TextBlock  Text="Плановая : "
+                                FontSize="13"
+                                Margin="10 10 10 0"
+                                x:Name="LaborIntensityPlanText"/>
+
+                    <TextBlock  Text="Фактическая : "
+                                FontSize="13"
+                                Margin="10 10 10 0"
+                                x:Name="LaborIntensityFactText"/>
+
+                    <Button Margin="0 30 0 10"
+                            Visibility="Hidden"
+                            HorizontalAlignment="Center"
+                            Content="Сохранить" />
+
+
+
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
