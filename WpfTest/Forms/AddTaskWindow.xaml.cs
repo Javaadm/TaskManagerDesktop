@@ -8,15 +8,14 @@ using WpfTest.Forms;
 
 namespace WpfTest
 {
-    /// <summary>
-    /// Логика взаимодействия для AddTaskWindow.xaml
-    /// </summary>
+
     public partial class AddTaskWindow : Window
     {
         private AppContext db;
         private User user;
         private Task parent_task;
         private State state;
+        private MainWindow mainWindow;
 
         public AddTaskWindow()
         {
@@ -24,8 +23,9 @@ namespace WpfTest
         }
 
 
-        public AddTaskWindow(User user, Task parent_task = null)
+        public AddTaskWindow(User user, MainWindow mainWindow, Task parent_task = null)
         {
+            this.mainWindow = mainWindow;
             this.parent_task = parent_task;
             this.user = user;
             initialLocal();
@@ -69,10 +69,9 @@ namespace WpfTest
 
         }
 
-        private void NumberValidationPlanned_labor_intensity(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+        private void NumberValidationPlannedLaborIntensity(object sender, TextCompositionEventArgs e)
+        { 
+            e.Handled = Task.NumberValidationPlannedLaborIntensity(e.Text);
         }
 
         private void Button_Create_Task_Click(object sender, RoutedEventArgs e)
@@ -80,7 +79,7 @@ namespace WpfTest
             string name = textBoxName_add.Text.Trim();
             string description = textBoxDescription_add.Text.Trim();
             string list_exe = textBoxList_executor_add.Text.Trim();
-            float planned_labor_intensity = float.Parse(textBoxPlanned_labor_intensity.Text.Trim());
+            int planned_labor_intensity = int.Parse(textBoxPlanned_labor_intensity.Text.Trim());
             int? parent_task_id = null;
 
             if (parent_task != null)
@@ -93,9 +92,7 @@ namespace WpfTest
             db.Tasks.Add(task);
             db.SaveChanges();
 
-
-            MainWindow mainWindow = new MainWindow(user);
-            mainWindow.Show();
+            mainWindow.RebootActive();
             Close();
 
         }

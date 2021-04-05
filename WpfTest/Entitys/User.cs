@@ -40,22 +40,22 @@ namespace WpfTest.Entitys {
                        
         }
 
-        public Task[] getArrayParentTasks()
+        public Task[] GetArrayParentTasks()
         {
             Task[] tasks;
             using (AppContext context = new AppContext())
             {
-                tasks = context.Tasks.Where(b => b.UserId == this.id && b.TaskId == null).ToArray();
+                tasks = context.Tasks.Where(b => b.UserId == this.id && b.TaskId == null && b.Is_Deleted == false).ToArray();
             }
             return tasks;
         }
 
-        public Task[] getArrayByIdTasks(int? parentTaskId = null)
+        public Task[] GetArrayByIdTasks(int? parentTaskId = null)
         {
             Task[] tasks;
             using (AppContext context = new AppContext())
             {
-                tasks = context.Tasks.Where(b => b.UserId == this.id && b.TaskId == parentTaskId).ToArray();
+                tasks = context.Tasks.Where(b => b.UserId == this.id && b.TaskId == parentTaskId && b.Is_Deleted == false).ToArray();
             }
             return tasks;
         }

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\github\TaskManagerDesktop\WpfTest\App.xaml
-462479773
+51600593273
 
-19-302016503
+16-1271592321
 181827725203
-Forms\AddTaskWindow.xaml;Forms\AuthWindow.xaml;Forms\MainWindow.xaml;Forms\RegWindow.xaml;
+Forms\AddTaskWindow.xaml;Forms\AuthWindow.xaml;Forms\EditTaskWindow.xaml;Forms\MainWindow.xaml;Forms\RegWindow.xaml;
 
-True
+False
 

@@ -14,6 +14,8 @@
         <Button
             Click="Button_Add_Task_Parent_Click"
             Content="{materialDesign:PackIcon Plus}"
+            Background="Green"
+            BorderBrush="Green"
             ToolTip="Добавть задачу" 
             Width="35"
             Padding="0"
@@ -27,7 +29,8 @@
                     <Setter Property="HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate>
-                                <TextBlock  Text="{Binding }"
+                                <TextBlock  Cursor="Hand"
+                                            Text="{Binding }"
                                             FontSize="13"
                                             FontWeight="Black"
                                             Margin="0 5 0 2"
@@ -41,6 +44,7 @@
 
         <Border MinWidth="650"
                 Margin="30"
+                x:Name="taskCard"
                 Background="White"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Right"
@@ -55,9 +59,41 @@
             <Grid>
                 <Button
                     Panel.ZIndex="10"
+                    Background="Green"
+                    BorderBrush="Green"
+                    x:Name="buttonAddTask"
+                    Visibility="Hidden"
                     Click="Button_Add_Task_Children_Click"
                     Content="{materialDesign:PackIcon Plus}"
                     ToolTip="Добавть подзадачу" 
+                    Width="35"
+                    Padding="0"
+                    Margin="0 0 90 0"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"/>
+                <Button
+                    Panel.ZIndex="10"
+                    Background="Blue"
+                    BorderBrush="Blue"
+                    x:Name="buttonEditTask"
+                    Visibility="Hidden"
+                    Click="Button_Edit_Task_Click"
+                    Content="{materialDesign:PackIcon PencilOutline}"
+                    ToolTip="Редактировать задачу" 
+                    Width="35"
+                    Padding="0"
+                    Margin="0 0 45 0"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"/>
+                <Button
+                    Panel.ZIndex="10"
+                    Background="#a30000"
+                    BorderBrush="#a30000"
+                    x:Name="buttonDeleteTask"
+                    Visibility="Hidden"
+                    Click="Button_Delete_Task_Click"
+                    Content="{materialDesign:PackIcon DeleteForeverOutline}"
+                    ToolTip="Удалить задачу" 
                     Width="35"
                     Padding="0"
                     VerticalAlignment="Top"
@@ -74,59 +110,32 @@
                                 FontStyle="Oblique"
                                 FontWeight="Black"
                                 Margin="0 10 0 0" />
-
-                    <RichTextBox IsDocumentEnabled="True"
-                                 IsReadOnly="{Binding IsChecked, ElementName=RichTextBoxIsReadOnlyCheckBox}"
-                                 VerticalScrollBarVisibility="Auto"
-                                 SpellCheck.IsEnabled="True"
-                                 Margin="10 0 10 0"
-                                 MinHeight="50"
-                                 MaxHeight="100"
-                                 Grid.Row="1">
-                        <FlowDocument>
-                            <Paragraph>
-                                <Run FontStyle="Italic" x:Name="TextDescriptionTask">
-                                    With formatting support
-                                </Run>
-                            </Paragraph>
-                        </FlowDocument>
-                    </RichTextBox>
+                    <TextBlock FontStyle="Italic" 
+                               x:Name="TextDescriptionTask"
+                                Margin="10 0 10 0"
+                               />
+                    <Separator Margin="10 5 10 0"/>
 
                     <TextBlock  Text="Исполнители"
                                 FontSize="14"
                                 FontStyle="Oblique"
                                 FontWeight="Black"
                                 Margin="0 10 0 0" />
-                    <RichTextBox IsDocumentEnabled="True"
-                                 IsReadOnly="{Binding IsChecked, ElementName=RichTextBoxIsReadOnlyCheckBox}"
-                                 VerticalScrollBarVisibility="Auto"
-                                 SpellCheck.IsEnabled="True"
-                                 Margin="10 0 10 0"
-                                 MinHeight="20"
-                                 MaxHeight="30"
-                                 Grid.Row="1">
-                        <FlowDocument>
-                            <Paragraph>
-                                <Run FontStyle="Italic" x:Name="ListExe">
-                                    With formatting support
-                                </Run>
-                            </Paragraph>
-                        </FlowDocument>
-                    </RichTextBox>
+                    <TextBlock FontStyle="Italic" 
+                               x:Name="ListExe"
+                               Margin="10 0 10 0"
+                               />
+                    <Separator Margin="10 5 10 0"/>
 
                     <TextBlock  Text="Стадия"
                                 FontSize="14"
                                 FontStyle="Oblique"
                                 FontWeight="Black"
                                 Margin="0 10 0 0" />
-                    <ComboBox materialDesign:HintAssist.Hint="Стадия исполнения"
+                    <TextBlock materialDesign:HintAssist.Hint="Стадия исполнения"
                               Margin="10 0 10 0"
-                              x:Name="StateTask">
-                        <ComboBoxItem Content="Назначена" />
-                        <ComboBoxItem Content="Выполняется" />
-                        <ComboBoxItem Content="Приостановлена" />
-                        <ComboBoxItem Content="Завершена" />
-                    </ComboBox>
+                              x:Name="StateTask"/>
+                    <Separator Margin="10 5 10 0"/>
 
                     <TextBlock  Text="Трудоемкость"
                                 FontSize="14"
@@ -134,15 +143,10 @@
                                 FontWeight="Black"
                                 Margin="0 10 0 0" />
 
-                    <TextBlock  Text="Плановая : "
+                    <TextBlock  Text="Фактическая / Плановая : "
                                 FontSize="13"
                                 Margin="10 10 10 0"
-                                x:Name="LaborIntensityPlanText"/>
-
-                    <TextBlock  Text="Фактическая : "
-                                FontSize="13"
-                                Margin="10 10 10 0"
-                                x:Name="LaborIntensityFactText"/>
+                                x:Name="LaborIntensityText"/>
 
                     <Button Margin="0 30 0 10"
                             Visibility="Hidden"
