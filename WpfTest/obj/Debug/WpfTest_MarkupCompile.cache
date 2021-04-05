@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Алексей\Desktop\WpfTest\WpfTest\obj\Debug\
+D:\github\TaskManagerDesktop\WpfTest\obj\Debug\
 WpfTest
 none
 false
 DEBUG;TRACE
-C:\Users\Алексей\Desktop\WpfTest\WpfTest\App.xaml
-462479773
+D:\github\TaskManagerDesktop\WpfTest\App.xaml
+51600593273
 
-151606828041
-182112123029
-Forms\AddTaskWindow.xaml;Forms\AuthWindow.xaml;Forms\MainWindow.xaml;Forms\RegWindow.xaml;
+16-1271592321
+181827725203
+Forms\AddTaskWindow.xaml;Forms\AuthWindow.xaml;Forms\EditTaskWindow.xaml;Forms\MainWindow.xaml;Forms\RegWindow.xaml;
 
 False
 

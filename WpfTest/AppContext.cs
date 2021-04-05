@@ -3,7 +3,7 @@ using WpfTest.Entitys;
 
 namespace WpfTest
 {
-    class AppContext : DbContext
+    public class AppContext : DbContext
     {
         public AppContext()
             : base("DbConnection")
