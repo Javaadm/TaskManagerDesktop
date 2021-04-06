@@ -16,46 +16,135 @@ namespace WpfTest.Entitys
         private bool is_deleted;
         private int current_time_spend;
 
-        private int? userId;
-        private int? taskId;
-        private int stateId;
-        
+        private int? user_id;
+        private int? task_id;
+        private int state_id;
+
         private DateTimeOffset date_cteate;
         private DateTimeOffset date_update;
         private DateTimeOffset date_start;
-        private DateTimeOffset date_finish;
 
-        public int? TaskId
+
+        public int State_Id
         {
-            get { return taskId; }
-            set { taskId = value; }
+            get => state_id;
+            set => state_id = value;
         }
 
-        private Task GetTaskById(AppContext context, int? id) {
-            return context.Tasks.Find(id);
+
+        public int? User_Id
+        {
+            get => user_id;
+            set => user_id = value;
         }
 
-        public Task GetThisTaskInContext(AppContext context) {
-            return context.Tasks.Find(id);
+
+        public int? Task_Id
+        {
+            get => task_id;
+            set => task_id = value;
         }
 
-        private List<Task> GetAllChildrenTasksById(AppContext context, int? id_local = 0) {
-            if (id == 0)
+
+        public string Name
+        {
+            get => name;
+            set => name = value;
+        }
+
+
+        public bool Is_Deleted
+        {
+            get => is_deleted;
+            set => is_deleted = value;
+        }
+
+
+        public int Current_Time_Spend
+        {
+            get => current_time_spend;
+            set => current_time_spend = value;
+        }
+
+
+        public string Description
+        {
+            get => description;
+            set => description = value;
+        }
+
+
+        public string List_Exe
+        {
+            get => list_exe;
+            set => list_exe = value;
+        }
+
+
+        public int Planned_Labor_Intensity
+        {
+            get => planned_labor_intensity;
+            set => planned_labor_intensity = value;
+        }
+
+
+        public DateTimeOffset Date_Cteate
+        {
+            get => date_cteate;
+            set => date_cteate = value;
+        }
+
+
+        public DateTimeOffset Date_Update
+        {
+            get => date_update;
+            set => date_update = value;
+        }
+
+
+        public DateTimeOffset Date_Start
+        {
+            get => date_start;
+            set => date_start = value;
+        }
+
+
+        public Task GetTaskById(AppContext context, int? id_local = 0)
+        {
+            if (id_local == 0)
             {
                 id_local = this.id;
-            } 
-            return context.Tasks.Where(b => b.TaskId == id_local && b.Is_Deleted == false).ToList<Task>();
+            }
+            return context.Tasks.Find(id_local);
         }
+
+
+        private List<Task> GetAllChildrenTasksById(AppContext context, int? idLocal = 0)
+        {
+            if (idLocal == 0)
+            {
+                idLocal = this.id;
+            }
+            return context.Tasks.Where(b => b.Task_Id == idLocal && b.Is_Deleted == false).ToList<Task>();
+        }
+
+
+        public static List<Task> GetAllTasksByUserIdAndTaskId(AppContext context, int localUserId, int? idLocal = null)
+        {
+            return context.Tasks.Where(b => b.Task_Id == idLocal && b.User_Id == localUserId && b.Is_Deleted == false).ToList<Task>();
+        }
+
 
         internal Task ReturnThisTaskActual()
         {
-            using (AppContext context = new AppContext()) {
-
-               return GetTaskById(context, id);
+            using (AppContext context = new AppContext())
+            {
+                return GetTaskById(context, id);
             }
         }
 
-        internal void UpdateTask(string nameTask, string descriptionTask, string listExecutorTask, string pannedLaborIntensityTask, int stateTask)
+
+        internal void UpdateTask(string nameTask, string descriptionTask, string listExecutorTask, string pannedLaborIntensityTask)
         {
             using (AppContext context = new AppContext())
             {
@@ -63,129 +152,47 @@ namespace WpfTest.Entitys
                 task.name = nameTask;
                 task.description = descriptionTask;
                 task.list_exe = listExecutorTask;
-                task.stateId = stateTask;
                 task.planned_labor_intensity = int.Parse(pannedLaborIntensityTask);
                 context.SaveChanges();
             }
         }
 
-        public int StateId
-        {
-            get { return stateId; }
-            set { stateId = value; }
-        }
-
-        public int? UserId
-        {
-            get { return userId; }
-            set { userId = value; }
-        }
-
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        public bool Is_Deleted
-        {
-            get { return is_deleted; }
-            set { is_deleted = value; }
-        }
-        
-        public int Current_Time_Spend
-        {
-            get { return current_time_spend; }
-            set { current_time_spend = value; }
-        }
-
-        public string Description
-        {
-            get { return description; }
-            set { description = value; }
-        }
-
-        public string List_Exe
-        {
-            get { return list_exe; }
-            set { list_exe = value; }
-        }
-
-        public int Planned_Labor_Intensity
-        {
-            get { return planned_labor_intensity; }
-            set { planned_labor_intensity = value; }
-        }
-
-        public DateTimeOffset Date_Cteate
-        {
-            get { return date_cteate; }
-            set { date_cteate = value; }
-        }
-
-        public DateTimeOffset Date_Update
-        {
-            get { return date_update; }
-            set { date_update = value; }
-        }
-
-        public DateTimeOffset Date_Start
-        {
-            get { return date_start; }
-            set { date_start = value; }
-        }
-
-        public DateTimeOffset Date_Finish
-        {
-            get { return date_finish; }
-            set { date_finish = value; }
-        }
-
 
         public User GetUser()
         {
-            User user;
             using (AppContext context = new AppContext())
             {
-                user = context.Users.Find(UserId);
+                return User.GetUserById(context, user_id);
             }
-
-            return user;
         }
 
-        public string GetState()
+
+        public string GetStateValue()
         {
-            string state;
             using (AppContext context = new AppContext())
             {
-                state = context.States.Find(stateId).State_value;
+                return State.GetState(context, state_id).State_value;
             }
-
-            return state;
         }
+
 
         public Task GetParentTask()
         {
-            Task task;
             using (AppContext context = new AppContext())
             {
-                task = GetTaskById(context, TaskId);
+                return GetTaskById(context, Task_Id);
             }
-
-            return task;
         }
+
 
         public List<Task> GetChildrenTasks()
         {
-            List<Task> tasks;
             using (AppContext context = new AppContext())
             {
-                tasks = GetAllChildrenTasksById(context, id);
-                    
+                return GetAllChildrenTasksById(context, id);
             }
-
-            return tasks;
         }
+
 
         internal void DeletedTask()
         {
@@ -195,38 +202,50 @@ namespace WpfTest.Entitys
 
                 task.is_deleted = true;
                 context.SaveChanges();
-                
             }
         }
 
-        public float GetSelfTime()
-        {
-            if (date_cteate < date_finish)
-                return (float)(date_finish - date_start).TotalHours;
-            if (date_cteate < date_start)
-                return (float)(DateTimeOffset.Now - date_start).TotalHours;
 
-            return 0;
-        } 
+        internal void CreateThisTask()
+        {
+            using (AppContext context = new AppContext())
+            {
+                context.Tasks.Add(this);
+                context.SaveChanges();
+            }
+        }
+
+
+        public int GetSelfTime()
+        {
+            if (date_cteate < date_start)
+            {
+                return (int)(DateTimeOffset.Now - date_start).TotalHours + current_time_spend;
+            }
+
+            return current_time_spend;
+        }
+
 
         private string FindSumTimeTask(string timeString)
         {
-            timeString += " "; 
+            timeString += " ";
             int sumFact = 0;
             int sumPlan = 0;
             int counterNumbers = 0;
             string number = "";
+
             for (int i = 0; i < timeString.Length; i++)
             {
                 char c = timeString[i];
 
-                if( c>='0' && c <= '9')
+                if (c >= '0' && c <= '9')
                 {
                     number += c;
                 }
-                else if ((number != "") )
+                else if ((number != ""))
                 {
-                    if(counterNumbers %2 == 0)
+                    if (counterNumbers % 2 == 0)
                     {
                         sumFact += int.Parse(number);
                     }
@@ -237,33 +256,32 @@ namespace WpfTest.Entitys
 
                     number = "";
                     counterNumbers++;
-
                 }
             }
 
             return sumFact.ToString() + " / " + sumPlan.ToString();
         }
-       
-        
+
+
         public string GetTimeRecurtionTree(bool isFirstStap)
         {
             string result = "";
+
             using (AppContext context = new AppContext())
             {
-
                 List<Task> tasks = GetAllChildrenTasksById(context, id);
 
-                foreach (var task_item in tasks)
+                foreach (Task taskItem in tasks)
                 {
-                    result = result + "  +  " + task_item.GetTimeRecurtionTree(false);
+                    result = result + "  +  " + taskItem.GetTimeRecurtionTree(false);
                 }
             }
+
             if (isFirstStap)
             {
                 result = " (" + GetSelfTime().ToString() + " / " + planned_labor_intensity.ToString() + ")" + result;
                 string sum = FindSumTimeTask(result);
                 result = sum + " = " + result;
-
             }
             else
             {
@@ -273,28 +291,29 @@ namespace WpfTest.Entitys
             return result;
         }
 
+
         private bool DoFinishTaskAndChildren()
         {
-            bool result;
-            if (this.stateId == 1)
+            bool result = true;
+
+            if (this.state_id == State.CONST__APPOINTED)
             {
                 return false;
             }
-            result = true;
+
             using (AppContext context = new AppContext())
             {
                 List<Task> tasks = GetAllChildrenTasksById(context, id);
 
-                foreach (var task_item in tasks)
+                foreach (Task taskItem in tasks)
                 {
-                    result = result && task_item.DoFinishTaskAndChildren();
+                    result = result && taskItem.DoFinishTaskAndChildren();
                 }
             }
 
-            //todo do update
             return result;
-
         }
+
 
         public static bool NumberValidationPlannedLaborIntensity(string text)
         {
@@ -305,46 +324,55 @@ namespace WpfTest.Entitys
 
         internal bool CheckStateChildren()
         {
-            bool isNormal = stateId != 1;
+            bool isNormal = state_id != State.CONST__APPOINTED;
+
             using (AppContext context = new AppContext())
             {
-
                 List<Task> tasks = GetAllChildrenTasksById(context, id);
-                foreach (var task_item in tasks)
+
+                foreach (Task taskItem in tasks)
                 {
-                    isNormal = isNormal && task_item.CheckStateChildren();
+                    isNormal = isNormal && taskItem.CheckStateChildren();
                 }
             }
+
             return isNormal;
         }
+
 
         internal void ChangeStateChildren()
         {
             using (AppContext context = new AppContext())
             {
-
                 List<Task> tasks = GetAllChildrenTasksById(context, id);
-                foreach (var task_item in tasks)
+
+                foreach (Task taskItem in tasks)
                 {
-                    task_item.stateId = 4;
+                    taskItem.ChangeStateChildren();
+                    taskItem.state_id = State.CONST__COMPLETED;
+                    taskItem.current_time_spend += taskItem.GetSelfTime();
+                    taskItem.Date_Start = default(DateTimeOffset);
                 }
+
                 context.SaveChanges();
             }
         }
 
+
         public Task() { }
 
-        public Task(string name, string description, string list_exe, int planned_labor_intensity, int? userId, int stateId, int? taskId = default(int))
+
+        public Task(string name, string description, string listExe, int plannedLaborIntensity, int? userId, int? taskId = default(int))
         {
             this.name = name;
             this.description = description;
-            this.list_exe = list_exe;
-            this.planned_labor_intensity = planned_labor_intensity;
+            this.list_exe = listExe;
+            this.planned_labor_intensity = plannedLaborIntensity;
             this.date_cteate = DateTime.Now;
             this.date_update = DateTime.Now;
-            this.taskId = taskId;
-            this.stateId = stateId;
-            this.userId = userId;
+            this.task_id = taskId;
+            this.state_id = State.CONST__APPOINTED;
+            this.user_id = userId;
             this.is_deleted = false;
         }
     }

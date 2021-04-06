@@ -14,13 +14,13 @@
             </Border.Effect>
             <StackPanel>
                 <TextBlock  Text="Регистрация" FontSize="30" FontWeight="Black" Margin="0 0 0 20"/>
-                <TextBox x:Name="TextBoxlogin_reg" materialDesign:HintAssist.Hint="Введите логин" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
-                <PasswordBox x:Name="TextBoxpass_reg" materialDesign:HintAssist.Hint="Введите пароль" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"/>
-                <PasswordBox x:Name="TextBoxpass_reg2" materialDesign:HintAssist.Hint="Повторите пароль" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"/>
+                <TextBox x:Name="loginReg" materialDesign:HintAssist.Hint="Введите логин" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <PasswordBox x:Name="passReg" materialDesign:HintAssist.Hint="Введите пароль" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"/>
+                <PasswordBox x:Name="passReg2" materialDesign:HintAssist.Hint="Повторите пароль" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"/>
                 <Button Margin="0 30 0 10" HorizontalAlignment="Center" Content="Зарегистрироваться" Click="Button_Reg_Click"/>
                 <Button HorizontalAlignment="Center" Content="Войти" Style="{StaticResource MaterialDesignFlatButton}" Click="Button_Window_Auth_Click"/>
 
-         
+
             </StackPanel>
         </Border>
     </Grid>
