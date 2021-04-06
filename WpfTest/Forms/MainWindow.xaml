@@ -23,7 +23,8 @@
             VerticalAlignment="Top"
             HorizontalAlignment="Left"/>
 
-        <TreeView x:Name="treeTasks" Margin="0 50 0 0">
+        <TreeView x:Name="treeTasks" 
+                  Margin="0 50 0 0">
             <TreeView.Resources>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="HeaderTemplate">
@@ -99,7 +100,7 @@
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"/>
                 <StackPanel>
-                    <TextBlock  x:Name="NameTask"
+                    <TextBlock  x:Name="nameTask"
                                 Text="Задача"
                                 FontSize="30"
                                 FontWeight="Black"
@@ -111,7 +112,7 @@
                                 FontWeight="Black"
                                 Margin="0 10 0 0" />
                     <TextBlock FontStyle="Italic" 
-                               x:Name="TextDescriptionTask"
+                               x:Name="descriptionTask"
                                 Margin="10 0 10 0"
                                />
                     <Separator Margin="10 5 10 0"/>
@@ -122,7 +123,7 @@
                                 FontWeight="Black"
                                 Margin="0 10 0 0" />
                     <TextBlock FontStyle="Italic" 
-                               x:Name="ListExe"
+                               x:Name="listExeTask"
                                Margin="10 0 10 0"
                                />
                     <Separator Margin="10 5 10 0"/>
@@ -134,7 +135,7 @@
                                 Margin="0 10 0 0" />
                     <TextBlock materialDesign:HintAssist.Hint="Стадия исполнения"
                               Margin="10 0 10 0"
-                              x:Name="StateTask"/>
+                              x:Name="stateTask"/>
                     <Separator Margin="10 5 10 0"/>
 
                     <TextBlock  Text="Трудоемкость"
@@ -146,7 +147,7 @@
                     <TextBlock  Text="Фактическая / Плановая : "
                                 FontSize="13"
                                 Margin="10 10 10 0"
-                                x:Name="LaborIntensityText"/>
+                                x:Name="laborIntensityTask"/>
 
                     <Button Margin="0 30 0 10"
                             Visibility="Hidden"

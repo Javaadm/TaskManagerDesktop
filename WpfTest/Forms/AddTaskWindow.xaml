@@ -14,23 +14,20 @@
             </Border.Effect>
             <StackPanel>
                 <TextBlock  Text="Создание задачи" FontSize="30" FontWeight="Black" Margin="0 0 0 20"/>
-                <TextBox x:Name="textBoxName_add" materialDesign:HintAssist.Hint="Название" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox x:Name="nameTask" materialDesign:HintAssist.Hint="Название" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
                 <TextBox
-                      x:Name="textBoxDescription_add"
-                      TextWrapping="Wrap"
-                      VerticalAlignment="Stretch"
+                      x:Name="descriptionTask"
                       MinWidth="280"
                       AcceptsReturn="True"
                       VerticalScrollBarVisibility="Auto"
-                      SpellCheck.IsEnabled="True"
                       materialDesign:HintAssist.Hint="Оприсание"
                       Height="80"
                       Text="" />
-                <TextBox x:Name="textBoxList_executor_add" materialDesign:HintAssist.Hint="Список исполнителей" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
-                <TextBox Name="textBoxPlanned_labor_intensity" materialDesign:HintAssist.Hint="Плановая трудоёмкость в часах" PreviewTextInput="NumberValidationPlannedLaborIntensity" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
-                
+                <TextBox x:Name="listExecutorTask" materialDesign:HintAssist.Hint="Список исполнителей" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox Name="plannedLaborIntensityTask" materialDesign:HintAssist.Hint="Плановая трудоёмкость в часах" PreviewTextInput="NumberValidationPlannedLaborIntensity" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+
                 <Button Margin="0 30 0 10" HorizontalAlignment="Center" Content="Создать задачу" Click="Button_Create_Task_Click"/>
-              
+
 
             </StackPanel>
         </Border>

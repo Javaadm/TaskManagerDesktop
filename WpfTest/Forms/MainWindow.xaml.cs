@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,47 +6,50 @@ using WpfTest.Entitys;
 
 namespace WpfTest.Forms
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        private AppContext db;
         private User user;
-        private Task active_task;
-        private TreeViewItem active_tree_element;
-        const bool IS_FIRST = true;
+        private Task activeTask;
+        private TreeViewItem activeTreeElement;
+        private const bool CONST__IS_FIRST = true;
 
 
         public MainWindow()
         {
-            initialLocal();
+            InitialLocal();
         }
 
 
         public MainWindow(User user)
         {
             this.user = user;
-            initialLocal();
+            InitialLocal();
         }
 
-        private void initialLocal()
+
+        private void InitialLocal()
         {
             InitializeComponent();
-            db = new AppContext();
 
             if (user == null)
             {
-                user = User.getAdminUser();
+                user = User.GetAdminUser();
             }
 
         }
 
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadTaskTree();
+        }
+
+
         internal void RebootActive()
         {
-            if (active_task != null)
+            if (activeTask != null)
             {
-                active_task = active_task.ReturnThisTaskActual();
+                activeTask = activeTask.ReturnThisTaskActual();
                 DisplayActiveTask();
                 LoadTaskTree();
             }
@@ -57,24 +58,29 @@ namespace WpfTest.Forms
                 DisplayDefaultWindow();
             }
         }
-        
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadTaskTree();
-
-            Console.WriteLine(default(DateTimeOffset));
-        }
 
         protected void LoadTaskTree()
         {
-            Task[] tasks = user.GetArrayByIdTasks();
+            List<Task> tasks = user.GetArrayByIdTasks();
             treeTasks.Items.Clear();
-            foreach (var task_item in tasks)
+
+            foreach (Task task_item in tasks)
             {
                 treeTasks.Items.Add(DoFillTree(task_item));
             }
         }
+
+
+        private void DisplayActiveTask()
+        {
+            descriptionTask.Text = activeTask.Description;
+            nameTask.Text = activeTask.Name;
+            listExeTask.Text = activeTask.List_Exe;
+            stateTask.Text = activeTask.GetStateValue();
+            laborIntensityTask.Text = "Фактическая / Плановая : " + activeTask.GetTimeRecurtionTree(CONST__IS_FIRST);
+        }
+
 
         protected void DisplayDefaultWindow()
         {
@@ -83,78 +89,71 @@ namespace WpfTest.Forms
             buttonEditTask.Visibility = Visibility.Hidden;
             buttonDeleteTask.Visibility = Visibility.Hidden;
 
-            TextDescriptionTask.Text = "";
-            NameTask.Text = "Задача";
-            ListExe.Text = "";
-            StateTask.Text = "";
-            LaborIntensityText.Text = "Фактическая / Плановая : ";
+            descriptionTask.Text = "";
+            nameTask.Text = "Задача";
+            listExeTask.Text = "";
+            stateTask.Text = "";
+            laborIntensityTask.Text = "Фактическая / Плановая : ";
         }
+
 
         protected TreeViewItem DoFillTree(Task task)
         {
-
-            Task[] children = user.GetArrayByIdTasks(task.id);
-            var item = new TreeViewItem()
+            List<Task> children = user.GetArrayByIdTasks(task.id);
+            TreeViewItem item = new TreeViewItem()
             {
                 Header = task.Name,
                 Tag = task
             };
 
-            foreach (var task_item in children)
+            foreach (Task task_item in children)
             {
-
-                TreeViewItem element_tree = DoFillTree(task_item);
-                item.Items.Add(element_tree);
+                TreeViewItem elementTree = DoFillTree(task_item);
+                item.Items.Add(elementTree);
             }
-            item.MouseLeftButtonUp += new MouseButtonEventHandler(Item_GotFocus);
-            //item.GotFocus += Item_GotFocus;
+
+            item.MouseLeftButtonUp += new MouseButtonEventHandler(ItemButtonUp);
             return item;
         }
 
-        TreeViewItem TryGetClickedItem(TreeView treeView, MouseButtonEventArgs e)
+
+        private TreeViewItem TryGetClickedItem(TreeView treeView, MouseButtonEventArgs e)
         {
-            var hit = e.OriginalSource as DependencyObject;
+            DependencyObject hit = e.OriginalSource as DependencyObject;
             while (hit != null && !(hit is TreeViewItem))
+            {
                 hit = System.Windows.Media.VisualTreeHelper.GetParent(hit);
+            }
 
             return hit as TreeViewItem;
         }
 
-        private void Item_GotFocus(object sender, MouseButtonEventArgs e)
+
+        private void ItemButtonUp(object sender, MouseButtonEventArgs e)
         {
-          
-            if (active_task == null)
+
+            if (activeTask == null)
             {
                 buttonAddTask.Visibility = Visibility;
                 buttonEditTask.Visibility = Visibility;
                 buttonDeleteTask.Visibility = Visibility;
             }
+
             TreeViewItem clickedItem = TryGetClickedItem(treeTasks, e);
 
             if (clickedItem == null || clickedItem != sender)
+            {
                 return;
+            }
 
-            Console.WriteLine(clickedItem.Header);
-            Console.WriteLine(((TreeViewItem)sender).Tag);
-            var item = (TreeViewItem)sender;
-            active_tree_element = item;
+            TreeViewItem item = (TreeViewItem)sender;
+            activeTreeElement = item;
 
-            active_task = (Task)item.Tag;
+            activeTask = (Task)item.Tag;
 
             DisplayActiveTask();
- 
-            Console.WriteLine(active_task.Name);
         }
 
-        private void DisplayActiveTask()
-        {
-            TextDescriptionTask.Text = active_task.Description;
-            NameTask.Text = active_task.Name;
-            ListExe.Text = active_task.List_Exe;
-            StateTask.Text = active_task.GetState();
-            //todo переписать (каждое переключение) - это много запросов в базу данных 
-            LaborIntensityText.Text = "Фактическая / Плановая : " + active_task.GetTimeRecurtionTree(IS_FIRST);
-        }
 
         private void Button_Add_Task_Parent_Click(object sender, RoutedEventArgs e)
         {
@@ -162,34 +161,36 @@ namespace WpfTest.Forms
             addTaskWindow.Show();
         }
 
+
         private void Button_Add_Task_Children_Click(object sender, RoutedEventArgs e)
         {
-            AddTaskWindow addTaskWindow = new AddTaskWindow(user, this, active_task);
+            AddTaskWindow addTaskWindow = new AddTaskWindow(user, this, activeTask);
             addTaskWindow.Show();
         }
 
+
         private void Button_Edit_Task_Click(object sender, RoutedEventArgs e)
         {
-            EditTaskWindow editTaskWindow = new EditTaskWindow(user, this, active_task);
+            EditTaskWindow editTaskWindow = new EditTaskWindow(user, this, activeTask);
             editTaskWindow.Show();
         }
 
+
         private void Button_Delete_Task_Click(object sender, RoutedEventArgs e)
         {
-            string messageBoxText = "Вы действительно хотите удалить " + active_task.Name + " и все вложеные в нее задачи?";
+            string messageBoxText = "Вы действительно хотите удалить " + activeTask.Name + " и все вложеные в нее задачи?";
             string caption = "Удаление задачи";
             MessageBoxButton button = MessageBoxButton.YesNo;
             MessageBoxImage icon = MessageBoxImage.Question;
-            
+
             MessageBoxResult result = MessageBox.Show(messageBoxText, caption, button, icon);
 
             if (result == MessageBoxResult.Yes)
             {
-                active_task.DeletedTask();
-                active_task = null;
+                activeTask.DeletedTask();
+                activeTask = null;
                 RebootActive();
             }
         }
-        
     }
 }
